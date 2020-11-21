@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SavedList<E extends Serializable> extends AbstractList<E> {
 
@@ -12,10 +13,15 @@ public class SavedList<E extends Serializable> extends AbstractList<E> {
     private final Path path;
 
     public SavedList(File file) {
+        Objects.requireNonNull(file);
         ArrayList<E> tmp;
-        try (ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(file.toPath()))) {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
             tmp = (ArrayList<E>) objectInputStream.readObject();
-        } catch (Exception ignored) {
+            if (tmp == null) {
+                tmp = new ArrayList<>();
+            }
+        } catch (Exception exception) {
+            System.err.println(exception.toString() + ". Creating new empty list...");
             tmp = new ArrayList<>();
         }
         this.list = tmp;
@@ -23,7 +29,7 @@ public class SavedList<E extends Serializable> extends AbstractList<E> {
 
     }
 
-    private void sync(){
+    private void sync() {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(this.path))) {
             outputStream.writeObject(this.list);
         } catch (IOException e) {
