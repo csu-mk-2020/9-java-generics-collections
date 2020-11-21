@@ -1,5 +1,6 @@
 package com.example.task01;
 
+import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 
 public class Pair<T, U> {
@@ -16,10 +17,16 @@ public class Pair<T, U> {
     }
 
     public T getFirst() {
+        /*if (this.first == null) {
+            throw new NoSuchElementException("No first value present");
+        }*/
         return this.first;
     }
 
     public U getSecond() {
+        /*if (this.second == null) {
+            throw new NoSuchElementException("No second value present");
+        }*/
         return this.second;
     }
 
@@ -33,13 +40,29 @@ public class Pair<T, U> {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (obj == null || this.getClass() != obj.getClass())
             return false;
-        return this.first.equals(((Pair<T, U>) obj).first) && this.second.equals(((Pair<T, U>) obj).second);
+        boolean firstEqual;
+        if (this.first != null && ((Pair<T, U>) obj).first != null) {
+            firstEqual = this.first.equals(((Pair<T, U>) obj).first);
+        } else firstEqual = this.first == null && ((Pair<T, U>) obj).first == null;
+        boolean secondEqual;
+        if (this.second != null && ((Pair<T, U>) obj).second != null) {
+            secondEqual = this.second.equals(((Pair<T, U>) obj).second);
+        } else secondEqual = this.second == null && ((Pair<T, U>) obj).second == null;
+        return firstEqual && secondEqual;
     }
 
     @Override
     public int hashCode() {
-        return this.first.hashCode() ^ this.second.hashCode();
+        int firstHashCode = 0;
+        if (this.first != null) {
+            firstHashCode = this.first.hashCode();
+        }
+        int secondHashCode = 0;
+        if (this.second != null) {
+            secondHashCode = this.second.hashCode();
+        }
+        return firstHashCode ^ secondHashCode;
     }
 }
