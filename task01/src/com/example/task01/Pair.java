@@ -1,56 +1,32 @@
 package com.example.task01;
 
-import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 
-public class Pair<T, U> {
-    private final T first;
-    private final U second;
+public class Pair<A, B> {
+    private final A first;
+    private final B second;
 
-    private Pair(T first, U second) {
+    private Pair(A first, B second) {
         this.first = first;
         this.second = second;
     }
 
-    public static <T, U> Pair<T, U> of(T first, U second) {
+    public static <A, B> Pair<A, B> of(A first, B second) {
         return new Pair<>(first, second);
     }
 
-    public T getFirst() {
-        /*if (this.first == null) {
-            throw new NoSuchElementException("No first value present");
-        }*/
+    public A getFirst() {
         return this.first;
     }
 
-    public U getSecond() {
-        /*if (this.second == null) {
-            throw new NoSuchElementException("No second value present");
-        }*/
+    public B getSecond() {
         return this.second;
     }
 
-    public void ifPresent(BiConsumer<? super T, ? super U> action) {
+    public void ifPresent(BiConsumer<? super A, ? super B> action) {
         if (this.first != null && this.second != null) {
             action.accept(this.first, this.second);
         }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || this.getClass() != obj.getClass())
-            return false;
-        boolean firstEqual;
-        if (this.first != null && ((Pair<T, U>) obj).first != null) {
-            firstEqual = this.first.equals(((Pair<T, U>) obj).first);
-        } else firstEqual = this.first == null && ((Pair<T, U>) obj).first == null;
-        boolean secondEqual;
-        if (this.second != null && ((Pair<T, U>) obj).second != null) {
-            secondEqual = this.second.equals(((Pair<T, U>) obj).second);
-        } else secondEqual = this.second == null && ((Pair<T, U>) obj).second == null;
-        return firstEqual && secondEqual;
     }
 
     @Override
@@ -65,4 +41,23 @@ public class Pair<T, U> {
         }
         return firstHashCode ^ secondHashCode;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+        boolean firstEqual;
+        if (this.first != null && ((Pair<A, B>) obj).first != null) {
+            firstEqual = this.first.equals(((Pair<A, B>) obj).first);
+        } else firstEqual = this.first == null && ((Pair<A, B>) obj).first == null;
+        boolean secondEqual;
+        if (this.second != null && ((Pair<A, B>) obj).second != null) {
+            secondEqual = this.second.equals(((Pair<A, B>) obj).second);
+        } else secondEqual = this.second == null && ((Pair<A, B>) obj).second == null;
+        return firstEqual && secondEqual;
+    }
+
+
 }
