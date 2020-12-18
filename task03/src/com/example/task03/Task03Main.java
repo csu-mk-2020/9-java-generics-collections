@@ -49,4 +49,7 @@ public class Task03Main {
         sortResult.sort(Comparator.comparing(str -> str.iterator().next()));
         return sortResult;
     }
+
+
+
 }
